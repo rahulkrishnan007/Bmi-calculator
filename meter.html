@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #3A4D39;
+            background: #ECE3CE;
+        }
+
+        .main-layout {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #739072;
+            border-radius: 15px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* Details and video share one card */
+        .details-video-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .details-info {
+            padding: 10px;
+            min-width: 0;
+        }
+
+        .video-info {
+            min-width: 0;
+        }
+
+        .side-video {
+            display: block;
+            width: 100%;
+            height: 280px;
+            width: 6000px;
+            
+            object-fit: cover;
+            border-radius: 12px;
+            background: #3A4D39;
+        }
+
+        .btn {
+            background: #4F6F52;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #3A4D39;
+        }
+
+        .photo {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .bottom-section {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        #needle {
+            transition: transform 1s ease;
+        }
+
+        @media (max-width: 640px) {
+            .details-video-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .details-info {
+                padding: 0;
+            }
+
+            .side-video {
+                height: 230px;
+            }
+
+            .card {
+                padding: 17px;
+            }
+        }
+
+        @media print {
+            .no-print,
+            video {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen p-4 md:p-8">
+
+    <main class="main-layout">
+
+        <!-- Heading -->
+        <header class="text-center mb-6">
+            <h1 class="text-3xl font-bold mb-2">BMI Calculator</h1>
+            <p>Your health, your way 🌿</p>
+        </header>
+
+
+        <!-- Your Details and Video in the Same Card -->
+        <section class="card details-video-layout">
+
+            <!-- Details -->
+            <div class="details-info">
+                <h2 class="text-xl font-bold mb-5">Your Details</h2>
+
+                <p class="break-words">
+                    <b>Name:</b> <span id="name">--</span>
+                </p>
+
+                <p class="mt-3">
+                    <b>Age:</b> <span id="age">--</span>
+                </p>
+
+                <p class="mt-3">
+                    <b>Gender:</b> <span id="gender">--</span>
+                </p>
+
+                <p class="mt-3">
+                    <b>Height:</b> <span id="height">--</span>
+                </p>
+
+                <p class="mt-3">
+                    <b>Weight:</b> <span id="weight">--</span>
+                </p>
+            </div>
+
+            <!-- Video -->
+            <div class="video-info">
+                <h2 class="text-xl font-bold mb-3">Relax & Refresh 🌿</h2>
+
+                <video class="side-video"
+                       autoplay
+                       muted
+                       loop
+                       playsinline>
+                    <source src="./videoplayback.m4v" type="video/mp4">
+                    Your browser does not support this video.
+                </video>
+            </div>
+
+        </section>
+
+
+        <div class="bottom-section">
+
+            <!-- BMI Meter -->
+            <section class="card text-center">
+
+                <h2 class="text-xl font-bold mb-4">Your BMI Result</h2>
+
+                <svg viewBox="0 0 300 180"
+                     class="w-full max-w-sm mx-auto"
+                     role="img"
+                     aria-label="BMI meter">
+
+                    <path d="M35 150 A115 115 0 0 1 265 150"
+                          fill="none"
+                          stroke="#d8d8d8"
+                          stroke-width="24"/>
+
+                    <path d="M35 150 A115 115 0 0 1 95 45"
+                          fill="none"
+                          stroke="#5bb5f0"
+                          stroke-width="24"/>
+
+                    <path d="M95 45 A115 115 0 0 1 195 45"
+                          fill="none"
+                          stroke="#4cd18a"
+                          stroke-width="24"/>
+
+                    <path d="M195 45 A115 115 0 0 1 265 150"
+                          fill="none"
+                          stroke="#ffc247"
+                          stroke-width="24"/>
+
+                    <g id="needle">
+                        <line x1="150" y1="150"
+                              x2="150" y2="55"
+                              stroke="#3A4D39"
+                              stroke-width="5"
+                              stroke-linecap="round"/>
+                    </g>
+
+                    <circle cx="150" cy="150" r="9" fill="#3A4D39"/>
+
+                </svg>
+
+                <h2 id="bmi" class="text-5xl font-bold mt-2">--</h2>
+
+                <p id="category" class="text-xl font-bold mt-3">
+                    Waiting for result
+                </p>
+
+                <p id="message" class="mt-3 leading-relaxed"></p>
+
+            </section>
+
+
+            <!-- Healthy Habits -->
+            <section class="card">
+
+                <h2 class="text-xl font-bold mb-3">
+                    A Few Healthy Habits
+                </h2>
+
+                <p class="mb-3">🥗 Eat balanced meals.</p>
+                <p class="mb-3">🚶 Stay active in ways you enjoy.</p>
+                <p class="mb-3">💧 Drink water regularly.</p>
+                <p>😴 Get enough sleep.</p>
+
+            </section>
+
+
+            <!-- Photos at the Bottom -->
+            <section class="card">
+
+                <h2 class="text-xl font-bold mb-4">
+                    Healthy Inspiration
+                </h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                    <div>
+                        <img src="./2.jpeg"
+                             alt="Healthy lifestyle"
+                             class="photo">
+
+                        <p class="text-center mt-2">
+                            Healthy living 🌿
+                        </p>
+                    </div>
+
+                    <div>
+                        <img src="./1.jpeg"
+                             alt="Wellness inspiration"
+                             class="photo">
+
+                        <p class="text-center mt-2">
+                            Take care of yourself 💚
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div class="flex flex-wrap justify-center gap-3 mb-6 no-print">
+
+            <button class="btn"
+                    onclick="location.href='index.html'">
+                Calculate Again
+            </button>
+
+            <button class="btn"
+                    onclick="window.print()">
+                Print
+            </button>
+
+        </div>
+
+        <p class="text-center text-sm mb-4">
+            BMI is a guide, not a medical diagnosis.
+        </p>
+
+    </main>
+
+
+    <script>
+        const saved = localStorage.getItem("bmiPerson");
+
+        if (saved) {
+            try {
+                const person = JSON.parse(saved);
+
+                const name = person.name;
+                const age = Number(person.age);
+                const height = Number(person.height);
+                const weight = Number(person.weight);
+                const gender = person.gender;
+
+                if (
+                    typeof name !== "string" ||
+                    !name.trim() ||
+                    !Number.isFinite(age) ||
+                    !Number.isFinite(height) ||
+                    !Number.isFinite(weight) ||
+                    age <= 0 ||
+                    height <= 0 ||
+                    weight <= 0
+                ) {
+                    throw new Error("Invalid details");
+                }
+
+                // Show personal details
+                document.getElementById("name").textContent = name;
+                document.getElementById("age").textContent = age + " years";
+                document.getElementById("gender").textContent = gender || "--";
+                document.getElementById("height").textContent = height + " cm";
+                document.getElementById("weight").textContent = weight + " kg";
+
+                // Calculate BMI
+                const bmi = weight / ((height / 100) ** 2);
+
+                document.getElementById("bmi").textContent = bmi.toFixed(1);
+
+                let category;
+                let message;
+                let angle;
+
+                if (bmi < 18.5) {
+                    category = "Underweight";
+                    message = "Try to eat regular, balanced meals. Talk to a healthcare professional if you are concerned.";
+                    angle = -60;
+
+                } else if (bmi < 25) {
+                    category = "Normal range";
+                    message = "Keep up your healthy habits and take care of yourself.";
+                    angle = -15;
+
+                } else if (bmi < 30) {
+                    category = "Overweight";
+                    message = "Balanced meals and enjoyable movement can support your well-being.";
+                    angle = 25;
+
+                } else {
+                    category = "Obesity range";
+                    message = "Consider discussing your result with a healthcare professional.";
+                    angle = 60;
+                }
+
+                if (age < 20) {
+                    category = "Age-specific assessment needed";
+                    message = "For people under 20, BMI should be interpreted using age- and sex-specific growth charts.";
+                }
+
+                document.getElementById("category").textContent = category;
+                document.getElementById("message").textContent = message;
+
+                document.getElementById("needle").style.transform =
+                    "rotate(" + angle + "deg)";
+
+                document.getElementById("needle").style.transformOrigin =
+                    "150px 150px";
+
+            } catch (error) {
+                document.getElementById("category").textContent =
+                    "Please calculate again";
+
+                document.getElementById("message").textContent =
+                    "Your saved details could not be read. Return to the calculator and try again.";
+            }
+
+        } else {
+            document.getElementById("category").textContent =
+                "No details found";
+
+            document.getElementById("message").textContent =
+                "Open index.html and calculate your BMI first.";
+        }
+    </script>
+
+</body>
+</html>

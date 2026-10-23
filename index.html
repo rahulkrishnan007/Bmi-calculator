@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        body {
+            background-color: #ECE3CE;
+        }
+
+        .calculator {
+            background-color: #ffffff;
+            border: 2px solid #739072;
+        }
+
+        .heading {
+            color: #3A4D39;
+        }
+
+        .custom-input {
+            border: 1px solid #739072;
+            outline: none;
+        }
+
+        .custom-input:focus {
+            border-color: #3A4D39;
+            box-shadow: 0 0 0 2px #ECE3CE;
+        }
+
+        .calculate-btn {
+            background-color: #4F6F52;
+            transition: 0.3s;
+        }
+
+        .calculate-btn:hover {
+            background-color: #3A4D39;
+        }
+
+        .reset-btn {
+            background-color: #ECE3CE;
+            color: #3A4D39;
+        }
+
+        .reset-btn:hover {
+            background-color: #739072;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex justify-center items-center p-4">
+
+    <div class="calculator p-8 rounded-2xl shadow-xl w-full max-w-md">
+
+        <h1 class="heading text-3xl font-bold text-center mb-6">
+            BMI Calculator
+        </h1>
+
+        <label class="block mb-2 font-semibold text-[#3A4D39]">
+            Full Name
+        </label>
+        <input type="text" id="name"
+            class="custom-input p-3 w-full rounded-lg mb-4"
+            placeholder="Enter your name">
+
+        <label class="block mb-2 font-semibold text-[#3A4D39]">
+            Age
+        </label>
+        <input type="number" id="age"
+            class="custom-input p-3 w-full rounded-lg mb-4"
+            placeholder="Enter your age">
+
+        <label class="block mb-2 font-semibold text-[#3A4D39]">
+            Gender
+        </label>
+        <select id="gender"
+            class="custom-input p-3 w-full rounded-lg mb-4">
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label class="block mb-2 font-semibold text-[#3A4D39]">
+            Height (cm)
+        </label>
+        <input type="number" id="height"
+            class="custom-input p-3 w-full rounded-lg mb-4"
+            placeholder="Enter height in cm">
+
+        <label class="block mb-2 font-semibold text-[#3A4D39]">
+            Weight (kg)
+        </label>
+        <input type="number" id="weight"
+            class="custom-input p-3 w-full rounded-lg mb-5"
+            placeholder="Enter weight in kg">
+
+        <button onclick="calculateBMI()"
+            class="calculate-btn text-white font-bold p-3 w-full rounded-lg">
+            Calculate BMI
+        </button>
+
+        <div id="result" class="text-center mt-6"></div>
+
+        <button onclick="resetForm()"
+            class="reset-btn font-bold p-3 w-full rounded-lg mt-4">
+            Reset
+        </button>
+
+    </div>
+
+    <script src="./script.js"></script>
+
+</body>
+</html>
